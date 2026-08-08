@@ -259,7 +259,9 @@
     "limitHint": "සීමාවක් නොමැති නම් හිස්ව තබන්න.",
     "usageThisMonth": "මාසික භාවිතය",
     "usageEmpty": "මෙම මාසයේ තවම ඉල්ලීම් නැත.",
-    "usageRequestsMonth": "මෙම මාසයේ ඉල්ලීම් {count}"
+    "usageRequestsMonth": "මෙම මාසයේ ඉල්ලීම් {count}",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "නොමැනූ ආකෘති ගවේෂණය කරන්න",

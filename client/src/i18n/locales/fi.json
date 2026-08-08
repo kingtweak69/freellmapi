@@ -259,7 +259,9 @@
     "limitHint": "Jätä tyhjäksi, jos ei rajaa.",
     "usageThisMonth": "Kuukausikäyttö",
     "usageEmpty": "Ei vielä pyyntöjä tässä kuussa.",
-    "usageRequestsMonth": "{count} pyyntöä tässä kuussa"
+    "usageRequestsMonth": "{count} pyyntöä tässä kuussa",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Tutki mittaamattomia malleja",

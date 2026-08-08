@@ -259,7 +259,9 @@
     "limitHint": "制限なしにするには空欄にします。",
     "usageThisMonth": "月間使用量",
     "usageEmpty": "今月はまだリクエストがありません。",
-    "usageRequestsMonth": "今月 {count} 件"
+    "usageRequestsMonth": "今月 {count} 件",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "未計測のモデルを探索",

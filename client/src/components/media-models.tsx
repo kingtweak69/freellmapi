@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { AudioLines, Image as ImageIcon, Mic } from 'lucide-react'
+import { AudioLines, Image as ImageIcon, Mic, Video } from 'lucide-react'
 import { apiFetch } from '@/lib/api'
 import { Switch } from '@/components/ui/switch'
 import { ConfirmButton } from '@/components/confirm-button'
@@ -16,7 +16,7 @@ export interface MediaModel {
   platform: string
   modelId: string
   displayName: string
-  modality: 'image' | 'audio' | 'transcription'
+  modality: 'image' | 'audio' | 'transcription' | 'video'
   enabled: boolean
   quotaLabel: string
   keyCount: number
@@ -25,7 +25,7 @@ export interface MediaModel {
 interface MediaData { models: MediaModel[] }
 
 interface MediaUsage {
-  modality: 'image' | 'audio'
+  modality: 'image' | 'audio' | 'video'
   models: {
     id: number
     platform: string
@@ -137,7 +137,7 @@ function MediaGroupCard({
 // applied. The Audio tab carries both directions of the modality: audio out
 // (text to speech, /v1/audio/speech) and audio in (speech to text,
 // /v1/audio/transcriptions) as two sections of one page.
-export function MediaModelsView({ modality }: { modality: 'image' | 'audio' }) {
+export function MediaModelsView({ modality }: { modality: 'image' | 'audio' | 'video' }) {
   const { t } = useI18n()
   const queryClient = useQueryClient()
 
@@ -167,10 +167,19 @@ export function MediaModelsView({ modality }: { modality: 'image' | 'audio' }) {
   const groups = groupMedia(models.filter(m => m.modality === modality))
   const sttGroups = groupMedia(models.filter(m => m.modality === 'transcription'))
   // Every models tab shares one title; the tab bar above says which set you are
-  // looking at, so repeating "Image"/"Audio" here just competed with it.
+  // looking at, so repeating "Image"/"Audio"/"Video" here just competed with it.
   const title = t('models.title')
-  const description = modality === 'image' ? t('models.imageDesc') : t('models.audioDesc')
-  const endpoint = modality === 'image' ? '/v1/images/generations' : '/v1/audio/speech'
+  const description = modality === 'image'
+    ? t('models.imageDesc')
+    : modality === 'video'
+      ? t('models.videoDesc')
+      : t('models.audioDesc')
+  const endpoint = modality === 'image'
+    ? '/v1/images/generations'
+    : modality === 'video'
+      ? '/v1/videos/generations'
+      : '/v1/audio/speech'
+  const emptyIcon = modality === 'image' ? ImageIcon : modality === 'video' ? Video : AudioLines
 
   const renderGroups = (gs: MediaGroup[], detailBase: string) => gs.map(g => (
     <MediaGroupCard
@@ -217,7 +226,7 @@ export function MediaModelsView({ modality }: { modality: 'image' | 'audio' }) {
           </>
         ) : groups.length === 0 ? (
           <EmptyState
-            icon={modality === 'image' ? ImageIcon : AudioLines}
+            icon={emptyIcon}
             title={t('models.mediaEmpty')}
           />
         ) : (

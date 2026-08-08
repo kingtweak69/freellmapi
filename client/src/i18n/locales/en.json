@@ -259,7 +259,9 @@
     "limitHint": "Leave blank for no limit.",
     "usageThisMonth": "Monthly usage",
     "usageEmpty": "No requests yet this month.",
-    "usageRequestsMonth": "{count} req this month"
+    "usageRequestsMonth": "{count} req this month",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Explore unmeasured models",

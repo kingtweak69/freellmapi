@@ -259,7 +259,9 @@
     "limitHint": "Hagyja üresen, ha nincs korlát.",
     "usageThisMonth": "Havi felhasználás",
     "usageEmpty": "Ebben a hónapban még nincs kérés.",
-    "usageRequestsMonth": "{count} kérés e hónapban"
+    "usageRequestsMonth": "{count} kérés e hónapban",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Nem mért modellek felfedezése",

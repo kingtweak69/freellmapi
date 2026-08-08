@@ -259,7 +259,9 @@
     "limitHint": "Biarkan kosong untuk tiada had.",
     "usageThisMonth": "Penggunaan bulanan",
     "usageEmpty": "Tiada permintaan lagi bulan ini.",
-    "usageRequestsMonth": "{count} permintaan bulan ini"
+    "usageRequestsMonth": "{count} permintaan bulan ini",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Teroka model yang belum diukur",

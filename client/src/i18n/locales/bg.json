@@ -259,7 +259,9 @@
     "limitHint": "Оставете празно за без ограничение.",
     "usageThisMonth": "Месечно потребление",
     "usageEmpty": "Няма заявки този месец.",
-    "usageRequestsMonth": "{count} заявки този месец"
+    "usageRequestsMonth": "{count} заявки този месец",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Изследване на неизмерени модели",

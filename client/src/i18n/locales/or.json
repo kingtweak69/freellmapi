@@ -259,7 +259,9 @@
     "limitHint": "କୌଣସି ସୀମା ନ ରଖିବାକୁ ଖାଲି ଛାଡ଼ନ୍ତୁ।",
     "usageThisMonth": "ମାସିକ ବ୍ୟବହାର",
     "usageEmpty": "ଏହି ମାସରେ ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି ଅନୁରୋଧ ନାହିଁ।",
-    "usageRequestsMonth": "ଏହି ମାସରେ {count} ଅନୁରୋଧ"
+    "usageRequestsMonth": "ଏହି ମାସରେ {count} ଅନୁରୋଧ",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "ମପାଯାଇନଥିବା ମଡେଲଗୁଡ଼ିକୁ ଅନୁସନ୍ଧାନ କରନ୍ତୁ",

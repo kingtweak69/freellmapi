@@ -259,7 +259,9 @@
     "limitHint": "Iwanang blangko para walang limitasyon.",
     "usageThisMonth": "Buwanang paggamit",
     "usageEmpty": "Wala pang mga kahilingan ngayong buwan.",
-    "usageRequestsMonth": "{count} kahilingan ngayong buwan"
+    "usageRequestsMonth": "{count} kahilingan ngayong buwan",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "I-explore ang mga hindi pa nasusukat na modelo",

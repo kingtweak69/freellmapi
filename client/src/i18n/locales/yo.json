@@ -259,7 +259,9 @@
     "limitHint": "Fi sílẹ̀ ní òfìfo fún àìní ààlà.",
     "usageThisMonth": "Ìlò oṣooṣù",
     "usageEmpty": "Kò sí ìbéèrè kankan ní oṣù yìí.",
-    "usageRequestsMonth": "ìbéèrè {count} ní oṣù yìí"
+    "usageRequestsMonth": "ìbéèrè {count} ní oṣù yìí",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Ṣawari awọn awoṣe ti a ko ti wọn",

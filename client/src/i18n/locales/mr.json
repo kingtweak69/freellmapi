@@ -259,7 +259,9 @@
     "limitHint": "मर्यादा नको असल्यास रिकामे ठेवा.",
     "usageThisMonth": "मासिक वापर",
     "usageEmpty": "या महिन्यात अद्याप विनंत्या नाहीत.",
-    "usageRequestsMonth": "या महिन्यात {count} विनंत्या"
+    "usageRequestsMonth": "या महिन्यात {count} विनंत्या",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "न मोजलेले मॉडेल्स एक्सप्लोर करा",

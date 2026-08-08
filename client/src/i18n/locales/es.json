@@ -259,7 +259,9 @@
     "limitHint": "Déjalo en blanco para no aplicar límite.",
     "usageThisMonth": "Uso mensual",
     "usageEmpty": "Aún no hay solicitudes este mes.",
-    "usageRequestsMonth": "{count} sol. este mes"
+    "usageRequestsMonth": "{count} sol. este mes",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Explorar modelos sin mediciones",
