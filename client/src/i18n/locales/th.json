@@ -259,7 +259,9 @@
     "limitHint": "เว้นว่างไว้หากไม่จำกัด",
     "usageThisMonth": "การใช้งานรายเดือน",
     "usageEmpty": "ยังไม่มีคำขอในเดือนนี้",
-    "usageRequestsMonth": "เดือนนี้ {count} คำขอ"
+    "usageRequestsMonth": "เดือนนี้ {count} คำขอ",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "สำรวจโมเดลที่ยังไม่ได้วัดผล",

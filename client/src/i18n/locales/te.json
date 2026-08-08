@@ -259,7 +259,9 @@
     "limitHint": "పరిమితి వద్దనుకుంటే ఖాళీగా వదిలేయండి.",
     "usageThisMonth": "నెలవారీ వినియోగం",
     "usageEmpty": "ఈ నెలలో ఇంకా అభ్యర్థనలు లేవు.",
-    "usageRequestsMonth": "ఈ నెలలో {count} అభ్యర్థనలు"
+    "usageRequestsMonth": "ఈ నెలలో {count} అభ్యర్థనలు",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "కొలవని మోడల్స్‌ను అన్వేషించండి",

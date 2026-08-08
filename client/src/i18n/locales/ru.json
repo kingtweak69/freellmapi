@@ -259,7 +259,9 @@
     "limitHint": "Оставьте пустым, чтобы не было ограничения.",
     "usageThisMonth": "Расход за месяц",
     "usageEmpty": "В этом месяце запросов пока нет.",
-    "usageRequestsMonth": "{count} запр. за месяц"
+    "usageRequestsMonth": "{count} запр. за месяц",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Исследовать неизмеренные модели",

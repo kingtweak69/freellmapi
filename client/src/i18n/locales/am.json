@@ -259,7 +259,9 @@
     "limitHint": "ገደብ እንዳይኖር ባዶ ይተዉት።",
     "usageThisMonth": "ወርሃዊ አጠቃቀም",
     "usageEmpty": "በዚህ ወር ገና ጥያቄዎች የሉም።",
-    "usageRequestsMonth": "በዚህ ወር {count} ጥያቄዎች"
+    "usageRequestsMonth": "በዚህ ወር {count} ጥያቄዎች",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "ያልተለኩ ሞዴሎችን ያስሱ",

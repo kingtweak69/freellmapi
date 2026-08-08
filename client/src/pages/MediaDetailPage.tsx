@@ -15,7 +15,7 @@ import type { MediaModel } from '@/components/media-models'
 // chat ModelDetailPage for the image, audio (TTS), and transcription (STT)
 // modalities. Transcription models list on the Audio tab, so their back link
 // points there.
-export default function MediaDetailPage({ modality }: { modality: 'image' | 'audio' | 'transcription' }) {
+export default function MediaDetailPage({ modality }: { modality: 'image' | 'audio' | 'transcription' | 'video' }) {
   const { t } = useI18n()
   const { id } = useParams<{ id: string }>()
   const label = id ? decodeURIComponent(id) : ''
@@ -52,12 +52,20 @@ export default function MediaDetailPage({ modality }: { modality: 'image' | 'aud
     "model": "${exampleModel}",
     "prompt": "a red cat"
   }'`
+    : modality === 'video'
+      ? `curl ${base}/videos/generations \\
+  -H "Authorization: ******" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "${exampleModel}",
+    "prompt": "a cat playing in the garden"
+  }'`
     : modality === 'transcription'
-      ? `curl ${base}/audio/transcriptions \\
+        ? `curl ${base}/audio/transcriptions \\
   -H "Authorization: Bearer ${key}" \\
   -F file=@audio.mp3 \\
   -F model="${exampleModel}"`
-      : `curl ${base}/audio/speech \\
+        : `curl ${base}/audio/speech \\
   -H "Authorization: Bearer ${key}" \\
   -H "Content-Type: application/json" \\
   -d '{

@@ -259,7 +259,9 @@
     "limitHint": "Lăsați gol pentru nicio limită.",
     "usageThisMonth": "Utilizare lunară",
     "usageEmpty": "Nicio cerere luna aceasta.",
-    "usageRequestsMonth": "{count} cereri luna aceasta"
+    "usageRequestsMonth": "{count} cereri luna aceasta",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Explorează modelele nemăsurate",

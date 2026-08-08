@@ -259,7 +259,9 @@
     "limitHint": "Palikite tuščią, jei nėra ribos.",
     "usageThisMonth": "Mėnesio naudojimas",
     "usageEmpty": "Šį mėnesį užklausų dar nėra.",
-    "usageRequestsMonth": "{count} užkl. šį mėnesį"
+    "usageRequestsMonth": "{count} užkl. šį mėnesį",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Tyrinėti neišmatuotus modelius",

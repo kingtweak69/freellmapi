@@ -50,9 +50,9 @@ mediaRouter.get('/', (_req: Request, res: Response) => {
 // ("Shared 10k neurons/day", "MP3 output - multilingual", which is not even a
 // quota) — so the summary shows spend and the label verbatim.
 mediaRouter.get('/usage', (req: Request, res: Response) => {
-  const parsed = z.enum(['image', 'audio']).safeParse(req.query.modality);
+  const parsed = z.enum(['image', 'audio', 'video']).safeParse(req.query.modality);
   if (!parsed.success) {
-    res.status(400).json({ error: { message: 'modality must be image or audio' } });
+    res.status(400).json({ error: { message: 'modality must be image, audio, or video' } });
     return;
   }
   const modality = parsed.data;
@@ -99,7 +99,7 @@ const customMediaSchema = z.object({
   baseUrl: z.string().url('baseUrl must be a valid URL'),
   model: z.string().min(1),
   displayName: z.string().optional(),
-  modality: z.enum(['image', 'audio']),
+  modality: z.enum(['image', 'audio', 'video']),
   apiKey: z.string().optional(),
   label: z.string().optional(),
   quotaLabel: z.string().optional(),

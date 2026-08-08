@@ -259,7 +259,9 @@
     "limitHint": "Ostavite prazno za bez ograničenja.",
     "usageThisMonth": "Mjesečna potrošnja",
     "usageEmpty": "Ovog mjeseca još nema zahtjeva.",
-    "usageRequestsMonth": "{count} zaht. ovog mjeseca"
+    "usageRequestsMonth": "{count} zaht. ovog mjeseca",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Istraži nemjerene modele",

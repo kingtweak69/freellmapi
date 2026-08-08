@@ -259,7 +259,9 @@
     "limitHint": "कुनै सीमा नराख्न खाली छोड्नुहोस्।",
     "usageThisMonth": "मासिक प्रयोग",
     "usageEmpty": "यो महिना अहिलेसम्म कुनै अनुरोध छैन।",
-    "usageRequestsMonth": "यो महिना {count} अनुरोध"
+    "usageRequestsMonth": "यो महिना {count} अनुरोध",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "नमापिएका मोडेलहरू अन्वेषण गर्नुहोस्",

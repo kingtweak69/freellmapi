@@ -259,7 +259,9 @@
     "limitHint": "ਕੋਈ ਹੱਦ ਨਾ ਰੱਖਣ ਲਈ ਖਾਲੀ ਛੱਡੋ।",
     "usageThisMonth": "ਮਹੀਨਾਵਾਰ ਵਰਤੋਂ",
     "usageEmpty": "ਇਸ ਮਹੀਨੇ ਹਾਲੇ ਕੋਈ ਬੇਨਤੀ ਨਹੀਂ।",
-    "usageRequestsMonth": "ਇਸ ਮਹੀਨੇ {count} ਬੇਨਤੀਆਂ"
+    "usageRequestsMonth": "ਇਸ ਮਹੀਨੇ {count} ਬੇਨਤੀਆਂ",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "ਬਿਨਾਂ ਮਾਪੇ ਮਾਡਲਾਂ ਦੀ ਖੋਜ ਕਰੋ",

@@ -259,7 +259,9 @@
     "limitHint": "Lad stå tomt for ingen grænse.",
     "usageThisMonth": "Månedligt forbrug",
     "usageEmpty": "Ingen anmodninger denne måned endnu.",
-    "usageRequestsMonth": "{count} anmodn. denne måned"
+    "usageRequestsMonth": "{count} anmodn. denne måned",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Udforsk umålte modeller",

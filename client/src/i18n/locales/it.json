@@ -259,7 +259,9 @@
     "limitHint": "Lascia vuoto per nessun limite.",
     "usageThisMonth": "Utilizzo mensile",
     "usageEmpty": "Nessuna richiesta questo mese.",
-    "usageRequestsMonth": "{count} rich. questo mese"
+    "usageRequestsMonth": "{count} rich. questo mese",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Esplora i modelli non misurati",

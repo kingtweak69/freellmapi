@@ -259,7 +259,9 @@
     "limitHint": "Acha wazi ili kusiwe na kikomo.",
     "usageThisMonth": "Matumizi ya kila mwezi",
     "usageEmpty": "Bado hakuna maombi mwezi huu.",
-    "usageRequestsMonth": "maombi {count} mwezi huu"
+    "usageRequestsMonth": "maombi {count} mwezi huu",
+    "videoTab": "Video",
+    "videoDesc": "Text-to-video generation models."
   },
   "strategies": {
     "explore": "Chunguza mifano isiyopimwa",

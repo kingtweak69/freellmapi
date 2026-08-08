@@ -33,6 +33,7 @@ import FusionPage from '@/pages/FusionPage'
 import EmbeddingsPage from '@/pages/EmbeddingsPage'
 import ImagePage from '@/pages/ImagePage'
 import AudioPage from '@/pages/AudioPage'
+import VideoPage from '@/pages/VideoPage'
 import MediaDetailPage from '@/pages/MediaDetailPage'
 import EmbeddingDetailPage from '@/pages/EmbeddingDetailPage'
 import AnalyticsPage from '@/pages/AnalyticsPage'
@@ -69,6 +70,7 @@ const modelItems = [
   { to: '/models/embeddings', labelKey: 'models.embeddingsTab' },
   { to: '/models/image', labelKey: 'models.imageTab' },
   { to: '/models/audio', labelKey: 'models.audioTab' },
+  { to: '/models/video', labelKey: 'models.videoTab' },
   { to: '/models/fusion', labelKey: 'models.fusionTab' },
 ]
 
@@ -359,6 +361,8 @@ function App() {
                       <Route path="/models/audio" element={<AudioPage />} />
                       <Route path="/models/audio/:id" element={<MediaDetailPage modality="audio" />} />
                       <Route path="/models/transcription/:id" element={<MediaDetailPage modality="transcription" />} />
+                      <Route path="/models/video" element={<VideoPage />} />
+                      <Route path="/models/video/:id" element={<MediaDetailPage modality="video" />} />
                       <Route path="/playground" element={<PlaygroundPage />} />
                       <Route path="/keys" element={<KeysPage />} />
                       <Route path="/agents" element={<AgentsPage />} />
