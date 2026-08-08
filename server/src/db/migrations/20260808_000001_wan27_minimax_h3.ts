@@ -62,6 +62,33 @@ export function up(db: Db): void {
   `);
   const selectMaxFallbackPriority = db.prepare('SELECT COALESCE(MAX(priority), 0) AS max_priority FROM fallback_config');
   const insertFallback = db.prepare('INSERT INTO fallback_config (model_db_id, priority, enabled) VALUES (?, ?, 1)');
+  const enableFallback = db.prepare(`
+    UPDATE fallback_config
+       SET enabled = 1
+     WHERE model_db_id IN (
+       SELECT id FROM models WHERE platform = ? AND model_id = ? AND source != 'user'
+     )
+  `);
+  const refreshSeededModel = db.prepare(`
+    UPDATE models
+       SET display_name = @displayName,
+           intelligence_rank = @intelligenceRank,
+           speed_rank = @speedRank,
+           size_label = @sizeLabel,
+           rpm_limit = @rpmLimit,
+           rpd_limit = @rpdLimit,
+           tpm_limit = @tpmLimit,
+           tpd_limit = @tpdLimit,
+           monthly_token_budget = @monthlyTokenBudget,
+           context_window = @contextWindow,
+           enabled = @enabled,
+           supports_vision = @supportsVision,
+           supports_tools = @supportsTools,
+           source = 'catalog'
+     WHERE platform = @platform
+       AND model_id = @modelId
+       AND source != 'user'
+  `);
 
   const selectProfiles = db.prepare('SELECT id FROM profiles ORDER BY id ASC');
   const selectMissingProfileRows = db.prepare(`
@@ -74,10 +101,18 @@ export function up(db: Db): void {
   `);
   const selectMaxProfilePriority = db.prepare('SELECT COALESCE(MAX(priority), 0) AS max_priority FROM profile_models WHERE profile_id = ?');
   const insertProfileRow = db.prepare('INSERT INTO profile_models (profile_id, model_db_id, priority, enabled) VALUES (?, ?, ?, ?)');
+  const enableProfileRows = db.prepare(`
+    UPDATE profile_models
+       SET enabled = 1
+     WHERE model_db_id IN (
+       SELECT id FROM models WHERE platform = ? AND model_id = ? AND source != 'user'
+     )
+  `);
 
   const apply = db.transaction(() => {
     for (const model of TARGET_MODELS) {
       insertModel.run(model);
+      refreshSeededModel.run(model);
     }
 
     let nextPriority = (selectMaxFallbackPriority.get() as { max_priority: number }).max_priority + 1;
@@ -86,6 +121,7 @@ export function up(db: Db): void {
       for (const row of missingFallbackRows) {
         insertFallback.run(row.id, nextPriority++);
       }
+      enableFallback.run(model.platform, model.modelId);
     }
 
     const profiles = selectProfiles.all() as { id: number }[];
@@ -96,6 +132,7 @@ export function up(db: Db): void {
         for (const row of missingProfileRows) {
           insertProfileRow.run(profile.id, row.id, nextProfilePriority++, row.enabled);
         }
+        enableProfileRows.run(model.platform, model.modelId);
       }
     }
   });
@@ -117,15 +154,15 @@ export function down(db: Db): void {
 
   if (rows.length === 0) return;
 
-  const deleteProfileRows = db.prepare('DELETE FROM profile_models WHERE model_db_id = ?');
-  const deleteFallbackRows = db.prepare('DELETE FROM fallback_config WHERE model_db_id = ?');
-  const deleteModel = db.prepare('DELETE FROM models WHERE id = ?');
+  const disableModel = db.prepare('UPDATE models SET enabled = 0 WHERE id = ?');
+  const disableFallback = db.prepare('UPDATE fallback_config SET enabled = 0 WHERE model_db_id = ?');
+  const disableProfileRows = db.prepare('UPDATE profile_models SET enabled = 0 WHERE model_db_id = ?');
 
   const revert = db.transaction(() => {
     for (const row of rows) {
-      deleteProfileRows.run(row.id);
-      deleteFallbackRows.run(row.id);
-      deleteModel.run(row.id);
+      disableModel.run(row.id);
+      disableFallback.run(row.id);
+      disableProfileRows.run(row.id);
     }
   });
 
