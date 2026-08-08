@@ -1461,6 +1461,8 @@ function migrateModelsV16Vision(db: Db) {
       UPDATE models SET supports_vision = 1
       WHERE LOWER(model_id) LIKE '%glm-4.6v%'
          OR LOWER(model_id) LIKE '%nemotron-nano-12b-v2-vl%'
+         OR LOWER(model_id) LIKE '%wan2.7%'
+         OR LOWER(model_id) LIKE '%wan-2.7%'
     `).run();
   });
   apply();
@@ -1496,6 +1498,7 @@ function migrateModelsV17IntelligenceTiers(db: Db) {
         OR LOWER(model_id) LIKE '%kimi-k2.6%'
         OR LOWER(model_id) LIKE '%kimi-k2-thinking%'
         OR LOWER(model_id) LIKE '%deepseek-v4-pro%'
+        OR LOWER(model_id) LIKE '%minimax-h3%'
         OR LOWER(model_id) LIKE '%deepseek-v4-flash%'
         OR LOWER(model_id) LIKE '%glm-5.1%'
         OR LOWER(model_id) LIKE '%minimax-m2.7%'
@@ -1784,6 +1787,7 @@ function migrateModelsV22Tools(db: Db) {
         OR LOWER(model_id) LIKE '%nemotron-nano-12b-v2-vl%' -- unlike the 30B nano: live-probed structured tool_calls (V23, 2026-06-07)
         OR LOWER(model_id) LIKE '%nemotron-3-ultra%' -- structured tool_calls live-verified via Zen's dedicated endpoint (V24, 2026-06-07); covers the disabled OR row too
         OR LOWER(model_id) LIKE '%minimax-m3%'       -- finish_reason:tool_calls live-verified on Zen (V24)
+        OR LOWER(model_id) LIKE '%minimax-h3%'       -- H3 family uses the same tool-oriented MiniMax interface
         OR LOWER(model_id) LIKE '%north-mini-code%'  -- structured tool_calls + reasoning_content live-verified on Zen (V26, 2026-06-10)
       )
     `).run();

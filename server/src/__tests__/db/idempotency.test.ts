@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import Database from 'better-sqlite3';
 import { initDb } from '../../db/index.js';
+import { up as runLegacyBaseline } from '../../db/migrations/20260101_000000_legacy_baseline.js';
 
 /**
  * All migrations must be idempotent: running initDb twice on the same
@@ -310,5 +311,65 @@ describe('Migration idempotency', () => {
 
     const missing = platforms.filter(p => !hasProvider(p));
     expect(missing).toEqual([]);
+  });
+
+  it('re-applies family rules for wan2.7 and minimax-h3 support', () => {
+    process.env.ENCRYPTION_KEY = '0'.repeat(64);
+    const db = initDb(':memory:');
+
+    db.prepare(`
+      INSERT INTO models (
+        platform, model_id, display_name, intelligence_rank, speed_rank, size_label,
+        monthly_token_budget, context_window, enabled, supports_vision, supports_tools, source
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      'nvidia',
+      'minimaxai/minimax-h3',
+      'MiniMax H3 (NV)',
+      99,
+      99,
+      'Small',
+      '~2M (credits)',
+      131072,
+      1,
+      0,
+      0,
+      'catalog',
+    );
+    db.prepare(`
+      INSERT INTO models (
+        platform, model_id, display_name, intelligence_rank, speed_rank, size_label,
+        monthly_token_budget, context_window, enabled, supports_vision, supports_tools, source
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      'nvidia',
+      'wan2.7-i2v',
+      'Wan 2.7 I2V (NV)',
+      99,
+      99,
+      'Small',
+      '~2M (credits)',
+      131072,
+      1,
+      0,
+      0,
+      'catalog',
+    );
+
+    runLegacyBaseline(db);
+
+    const minimax = db.prepare(`
+      SELECT size_label, supports_tools
+      FROM models
+      WHERE platform = 'nvidia' AND model_id = 'minimaxai/minimax-h3'
+    `).get() as { size_label: string; supports_tools: number };
+    expect(minimax).toEqual({ size_label: 'Frontier', supports_tools: 1 });
+
+    const wan = db.prepare(`
+      SELECT supports_vision
+      FROM models
+      WHERE platform = 'nvidia' AND model_id = 'wan2.7-i2v'
+    `).get() as { supports_vision: number };
+    expect(wan.supports_vision).toBe(1);
   });
 });
