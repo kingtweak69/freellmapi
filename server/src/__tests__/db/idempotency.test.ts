@@ -341,6 +341,16 @@ describe('Migration idempotency', () => {
          AND m.model_id IN ('alibaba/wan-2.7', 'minimax/minimax-h3')
     `).get() as { c: number }).c;
     expect(fallbackCount).toBe(2);
+
+    const profileRows = (db.prepare('SELECT COUNT(*) AS c FROM profiles').get() as { c: number }).c;
+    const profileCount = (db.prepare(`
+      SELECT COUNT(*) AS c
+        FROM profile_models pm
+        JOIN models m ON m.id = pm.model_db_id
+       WHERE m.platform = 'openrouter'
+         AND m.model_id IN ('alibaba/wan-2.7', 'minimax/minimax-h3')
+    `).get() as { c: number }).c;
+    expect(profileCount).toBe(profileRows * 2);
   });
 
   it('all enabled catalog platforms have a registered provider', async () => {
