@@ -7,6 +7,7 @@ import { routeRequest, resolveRoutingChain, resolveModelGroupCandidates, resolve
 import { recordRequest, recordTokens, setCooldown, getCooldownDurationForLimit, PAYMENT_REQUIRED_COOLDOWN_MS, MODEL_FORBIDDEN_COOLDOWN_MS, learnLimitFromError } from '../services/ratelimit.js';
 import { runEmbeddings, EmbeddingsError } from '../services/embeddings.js';
 import { runImageGeneration, runSpeech, runTranscription, MediaError, MAX_TRANSCRIPTION_BYTES } from '../services/media.js';
+import { createVideo, getVideo, getVideoContent, deleteVideo } from '../services/video.js';
 import multer from 'multer';
 import { getDb } from '../db/index.js';
 import { resolveAuth, prependSystemPrompt, type ResolvedAuth } from '../lib/system-prompt.js';
@@ -530,6 +531,69 @@ proxyRouter.post('/images/generations', async (req: Request, res: Response) => {
     const status = err instanceof MediaError ? err.status : 502;
     const httpStatus = status >= 400 && status < 600 ? status : 502;
     res.status(httpStatus).json({ error: { message: `image generation error: ${err?.message ?? 'unknown'}`, type: mediaErrorType(status) } });
+  }
+});
+
+// OpenAI-compatible asynchronous video API. Creation accepts either JSON or
+// multipart form data; follow-up requests stay pinned to the provider/key that
+// created the job, so an opaque upstream id can never leak into another account.
+const videoFields = multer().none();
+const VideoBody = z.object({
+  model: z.string().optional(),
+  prompt: z.string().min(1),
+  size: z.string().optional(),
+  seconds: z.union([z.string(), z.number().int().positive()]).optional(),
+});
+
+proxyRouter.post('/videos', (req: Request, res: Response, next) => {
+  if (!requireInferenceAuth(req, res)) return;
+  if (!req.is('multipart/form-data')) return next();
+  videoFields(req, res, err => err ? res.status(400).json({ error: { message: 'Malformed multipart/form-data upload.', type: 'invalid_request_error' } }) : next());
+}, async (req: Request, res: Response) => {
+  const parsed = VideoBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: { message: 'Invalid request: `prompt` is required', type: 'invalid_request_error' } });
+    return;
+  }
+  try {
+    res.status(202).json(await createVideo(parsed.data.model, {
+      prompt: parsed.data.prompt,
+      size: parsed.data.size,
+      seconds: parsed.data.seconds === undefined ? undefined : String(parsed.data.seconds),
+    }));
+  } catch (err: any) {
+    const status = err instanceof MediaError ? err.status : 502;
+    res.status(status >= 400 && status < 600 ? status : 502).json({ error: { message: `video generation error: ${err?.message ?? 'unknown'}`, type: mediaErrorType(status), ...(err instanceof MediaError && err.code ? { code: err.code } : {}) } });
+  }
+});
+
+proxyRouter.get('/videos/:id/content', async (req: Request, res: Response) => {
+  if (!requireInferenceAuth(req, res)) return;
+  try {
+    const result = await getVideoContent(String(req.params.id));
+    res.setHeader('Content-Type', result.contentType);
+    res.send(result.body);
+  } catch (err: any) {
+    const status = err instanceof MediaError ? err.status : 502;
+    res.status(status).json({ error: { message: err?.message ?? 'video content error', type: mediaErrorType(status) } });
+  }
+});
+
+proxyRouter.get('/videos/:id', async (req: Request, res: Response) => {
+  if (!requireInferenceAuth(req, res)) return;
+  try { res.json(await getVideo(String(req.params.id))); }
+  catch (err: any) {
+    const status = err instanceof MediaError ? err.status : 502;
+    res.status(status).json({ error: { message: err?.message ?? 'video retrieval error', type: mediaErrorType(status) } });
+  }
+});
+
+proxyRouter.delete('/videos/:id', async (req: Request, res: Response) => {
+  if (!requireInferenceAuth(req, res)) return;
+  try { res.json(await deleteVideo(String(req.params.id))); }
+  catch (err: any) {
+    const status = err instanceof MediaError ? err.status : 502;
+    res.status(status).json({ error: { message: err?.message ?? 'video deletion error', type: mediaErrorType(status) } });
   }
 });
 

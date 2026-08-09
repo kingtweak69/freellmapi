@@ -223,9 +223,25 @@ print(resp.choices[0].message.content)
 
 If no vision-capable model is enabled in your Fallback Chain, an image request returns a clear `422` (`code: "no_vision_model"`) rather than silently dropping the image. (Image input on `/v1/responses` isn't supported yet — use `/v1/chat/completions`.)
 
-## Images & text-to-speech
+## Images, video & text-to-speech
 
-`POST /v1/images/generations` and `POST /v1/audio/speech` route across the providers that serve media models, including custom OpenAI-compatible media endpoints. Browse and toggle them on the dashboard's **Models → Image / Audio** tabs.
+`POST /v1/images/generations`, `POST /v1/videos`, and `POST /v1/audio/speech` route across the providers that serve media models, including custom OpenAI-compatible media endpoints. Browse and toggle them on the dashboard's **Models → Image / Video / Audio** tabs.
+
+Video generation is asynchronous and follows the OpenAI Videos API contract. Create a job, poll it, then download the MP4:
+
+```bash
+job=$(curl -s -X POST http://localhost:3001/v1/videos \
+  -H "Authorization: Bearer freellmapi-your-unified-key" \
+  -F model=auto -F prompt="A cinematic tracking shot of a red cat" \
+  -F size=1280x720 -F seconds=8)
+
+curl http://localhost:3001/v1/videos/VIDEO_ID \
+  -H "Authorization: Bearer freellmapi-your-unified-key"
+curl http://localhost:3001/v1/videos/VIDEO_ID/content \
+  -H "Authorization: Bearer freellmapi-your-unified-key" --output video.mp4
+```
+
+Each job is pinned to the exact provider credential that created it, so polling and downloads remain correct even when `model: auto` is used.
 
 ## Fusion (multi-model synthesis)
 

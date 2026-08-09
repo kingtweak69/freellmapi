@@ -299,60 +299,6 @@ describe('Migration idempotency', () => {
     ]);
   });
 
-  it('seeds OpenRouter Wan 2.7 and MiniMax H3 with routing rows', () => {
-    process.env.ENCRYPTION_KEY = '0'.repeat(64);
-    const db = initDb(':memory:');
-
-    const rows = db.prepare(`
-      SELECT model_id, enabled, supports_vision, supports_tools, source
-        FROM models
-       WHERE platform = 'openrouter'
-         AND model_id IN ('alibaba/wan-2.7', 'minimax/minimax-h3')
-       ORDER BY model_id
-    `).all() as {
-      model_id: string;
-      enabled: number;
-      supports_vision: number;
-      supports_tools: number;
-      source: string;
-    }[];
-    expect(rows).toEqual([
-      {
-        model_id: 'alibaba/wan-2.7',
-        enabled: 1,
-        supports_vision: 1,
-        supports_tools: 0,
-        source: 'catalog',
-      },
-      {
-        model_id: 'minimax/minimax-h3',
-        enabled: 1,
-        supports_vision: 0,
-        supports_tools: 1,
-        source: 'catalog',
-      },
-    ]);
-
-    const fallbackCount = (db.prepare(`
-      SELECT COUNT(*) AS c
-        FROM fallback_config f
-        JOIN models m ON m.id = f.model_db_id
-       WHERE m.platform = 'openrouter'
-         AND m.model_id IN ('alibaba/wan-2.7', 'minimax/minimax-h3')
-    `).get() as { c: number }).c;
-    expect(fallbackCount).toBe(2);
-
-    const profileRows = (db.prepare('SELECT COUNT(*) AS c FROM profiles').get() as { c: number }).c;
-    const profileCount = (db.prepare(`
-      SELECT COUNT(*) AS c
-        FROM profile_models pm
-        JOIN models m ON m.id = pm.model_db_id
-       WHERE m.platform = 'openrouter'
-         AND m.model_id IN ('alibaba/wan-2.7', 'minimax/minimax-h3')
-    `).get() as { c: number }).c;
-    expect(profileCount).toBe(profileRows * 2);
-  });
-
   it('all enabled catalog platforms have a registered provider', async () => {
     process.env.ENCRYPTION_KEY = '0'.repeat(64);
     const db = initDb(':memory:');

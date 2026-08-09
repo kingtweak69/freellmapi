@@ -259,9 +259,7 @@
     "limitHint": "Laat leeg voor geen limiet.",
     "usageThisMonth": "Maandelijks gebruik",
     "usageEmpty": "Nog geen verzoeken deze maand.",
-    "usageRequestsMonth": "{count} verz. deze maand",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} verz. deze maand"
   },
   "strategies": {
     "explore": "Ongemeten modellen verkennen",

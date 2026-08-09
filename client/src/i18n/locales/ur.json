@@ -259,9 +259,7 @@
     "limitHint": "کوئی حد نہ رکھنے کے لیے خالی چھوڑیں۔",
     "usageThisMonth": "ماہانہ استعمال",
     "usageEmpty": "اس مہینے ابھی کوئی درخواست نہیں۔",
-    "usageRequestsMonth": "اس مہینے {count} درخواستیں",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "اس مہینے {count} درخواستیں"
   },
   "strategies": {
     "explore": "غیر پیمائش شدہ ماڈلز دریافت کریں",

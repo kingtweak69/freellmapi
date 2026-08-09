@@ -259,9 +259,7 @@
     "limitHint": "Bar shi fanko domin babu iyaka.",
     "usageThisMonth": "Amfani na wata-wata",
     "usageEmpty": "Babu buƙatu tukuna wannan wata.",
-    "usageRequestsMonth": "buƙatu {count} wannan wata",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "buƙatu {count} wannan wata"
   },
   "strategies": {
     "explore": "Bincika samfuran da ba a auna ba",

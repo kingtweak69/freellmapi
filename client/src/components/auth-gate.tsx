@@ -16,6 +16,7 @@ interface AuthStatus {
   needsSetup: boolean
   authenticated: boolean
   email: string | null
+  oauthOnly?: boolean
 }
 
 function Centered({ children }: { children: ReactNode }) {
@@ -431,9 +432,14 @@ export function AuthGate({ children }: { children: ReactNode }) {
     )
   }
 
+  if (data.oauthOnly) document.documentElement.dataset.freeapiOauth = 'true'
+  else delete document.documentElement.dataset.freeapiOauth
+
+  if (data.oauthOnly && !data.authenticated) {
+    return <Centered><a className="rounded-xl bg-primary px-4 py-2 text-sm text-primary-foreground" href="/oauth/github/login">Sign in with GitHub</a></Centered>
+  }
   if (data.needsSetup) return <AuthForm mode="setup" onAuthed={onAuthed} />
   if (!data.authenticated) return <AuthForm mode="login" onAuthed={onAuthed} />
 
   return <>{children}</>
 }
-

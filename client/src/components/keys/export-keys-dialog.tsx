@@ -62,6 +62,10 @@ export function ExportKeysDialog({ open, onOpenChange }: { open: boolean; onOpen
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [exporting, setExporting] = useState(false)
+  // The public Funnel can be GitHub-OAuth-only. Its gateway performs the
+  // sensitive-action re-auth server-side, so asking for a password that does
+  // not exist would be both misleading and impossible to complete.
+  const oauthOnly = typeof document !== 'undefined' && document.documentElement.dataset.freeapiOauth === 'true'
 
   const { data: keys = [] } = useQuery<ApiKey[]>({
     queryKey: ['keys'],
@@ -76,8 +80,7 @@ export function ExportKeysDialog({ open, onOpenChange }: { open: boolean; onOpen
     ? exportableKeys.filter(k => k.status === 'healthy').length
     : exportableKeys.length
 
-  async function handleExport(e: FormEvent) {
-    e.preventDefault()
+  async function exportNow() {
     setExporting(true)
     setError(null)
     try {
@@ -93,6 +96,11 @@ export function ExportKeysDialog({ open, onOpenChange }: { open: boolean; onOpen
     } finally {
       setExporting(false)
     }
+  }
+
+  async function handleExport(e: FormEvent) {
+    e.preventDefault()
+    await exportNow()
   }
 
   return (
@@ -191,7 +199,7 @@ export function ExportKeysDialog({ open, onOpenChange }: { open: boolean; onOpen
           <Button
             type="button"
             className="w-full"
-            onClick={() => setStep('password')}
+            onClick={() => { if (oauthOnly) void exportNow(); else setStep('password') }}
             disabled={exportCount === 0}
           >
             <Download className="size-3.5" />

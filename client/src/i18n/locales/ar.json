@@ -259,9 +259,7 @@
     "limitHint": "اتركه فارغًا لعدم وجود حد.",
     "usageThisMonth": "الاستخدام الشهري",
     "usageEmpty": "لا توجد طلبات هذا الشهر بعد.",
-    "usageRequestsMonth": "{count} طلب هذا الشهر",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} طلب هذا الشهر"
   },
   "strategies": {
     "explore": "استكشاف النماذج غير المقيسة",

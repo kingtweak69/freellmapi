@@ -259,9 +259,7 @@
     "limitHint": "Cheklov boʻlmasligi uchun boʻsh qoldiring.",
     "usageThisMonth": "Oylik foydalanish",
     "usageEmpty": "Bu oyda hali so'rovlar yo'q.",
-    "usageRequestsMonth": "bu oyda {count} ta so'rov",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "bu oyda {count} ta so'rov"
   },
   "strategies": {
     "explore": "O'lchanmagan modellarni o'rganish",

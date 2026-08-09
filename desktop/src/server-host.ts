@@ -15,6 +15,7 @@ import { startHealthChecker } from '../../server/src/services/health.js';
 import { startCatalogSync } from '../../server/src/services/catalog-sync.js';
 import { userCount, createUser, createSession } from '../../server/src/services/auth.js';
 import { NodeScheduler } from '../../server/src/lib/scheduler.js';
+import { startOAuthGateway, type GitHubOAuthConfig } from './oauth-gateway.js';
 
 export { getDb, getUnifiedApiKey };
 
@@ -28,6 +29,7 @@ export interface StartOptions {
 export interface ServerHandle {
   server: Server;
   port: number;
+  oauthPort?: number;
 }
 
 export async function startServer(opts: StartOptions): Promise<ServerHandle> {
@@ -43,6 +45,8 @@ export async function startServer(opts: StartOptions): Promise<ServerHandle> {
   startCatalogSync(scheduler);
   return { server, port };
 }
+
+export { startOAuthGateway, type GitHubOAuthConfig };
 
 // The dashboard window authenticates as a hidden machine user. The password
 // is random and never shown — sessions are minted directly against the DB.

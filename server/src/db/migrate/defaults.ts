@@ -20,8 +20,7 @@ import * as customModelEndpointIdentity from '../migrations/20260729_000001_cust
 import * as customEndpointHostLabels from '../migrations/20260802_000001_custom_endpoint_host_labels.js';
 import * as keyModelScope from '../migrations/20260805_000001_key_model_scope.js';
 import * as clientProfiles from '../migrations/20260805_000002_client_profiles.js';
-import * as wan27MinimaxH3 from '../migrations/20260808_000001_wan27_minimax_h3.js';
-import * as wan27VideoMedia from '../migrations/20260808_000002_wan27_video_media.js';
+import * as videoJobs from '../migrations/20260808_000001_video_jobs.js';
 
 export interface MigrationModule {
   up(db: Db): void;
@@ -54,8 +53,7 @@ export const CUSTOM_MODEL_ENDPOINT_IDENTITY_FILENAME = '20260729_000001_custom_m
 export const CUSTOM_ENDPOINT_HOST_LABELS_FILENAME = '20260802_000001_custom_endpoint_host_labels.ts';
 export const KEY_MODEL_SCOPE_FILENAME = '20260805_000001_key_model_scope.ts';
 export const CLIENT_PROFILES_FILENAME = '20260805_000002_client_profiles.ts';
-export const WAN27_MINIMAX_H3_FILENAME = '20260808_000001_wan27_minimax_h3.ts';
-export const WAN27_VIDEO_MEDIA_FILENAME = '20260808_000002_wan27_video_media.ts';
+export const VIDEO_JOBS_FILENAME = '20260808_000001_video_jobs.ts';
 
 export const DEFAULT_MIGRATIONS: readonly DefaultMigration[] = [
   { filename: LEGACY_BASELINE_FILENAME, module: legacyBaseline },
@@ -79,6 +77,5 @@ export const DEFAULT_MIGRATIONS: readonly DefaultMigration[] = [
   { filename: CUSTOM_ENDPOINT_HOST_LABELS_FILENAME, module: customEndpointHostLabels },
   { filename: KEY_MODEL_SCOPE_FILENAME, module: keyModelScope },
   { filename: CLIENT_PROFILES_FILENAME, module: clientProfiles },
-  { filename: WAN27_MINIMAX_H3_FILENAME, module: wan27MinimaxH3 },
-  { filename: WAN27_VIDEO_MEDIA_FILENAME, module: wan27VideoMedia },
+  { filename: VIDEO_JOBS_FILENAME, module: videoJobs },
 ];

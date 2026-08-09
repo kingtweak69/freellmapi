@@ -259,9 +259,7 @@
     "limitHint": "কোনো সীমা না রাখতে ফাঁকা রাখুন।",
     "usageThisMonth": "মাসিক ব্যবহার",
     "usageEmpty": "এই মাসে এখনও কোনো অনুরোধ নেই।",
-    "usageRequestsMonth": "এই মাসে {count}টি অনুরোধ",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "এই মাসে {count}টি অনুরোধ"
   },
   "strategies": {
     "explore": "অপরিমাপিত মডেল অন্বেষণ করুন",

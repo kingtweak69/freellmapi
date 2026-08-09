@@ -14,6 +14,7 @@ import {
 } from '../services/auth.js';
 import { setupCodeMatches, clearSetupCode } from '../lib/setup-code.js';
 import { generateResetCode, resetCodeMatches, clearResetCode } from '../lib/reset-code.js';
+import { oauthGatewayUser } from '../lib/oauth-gateway.js';
 
 export const authRouter = Router();
 
@@ -70,6 +71,26 @@ function isLoopbackRemote(req: Request): boolean {
   return /^127\.\d{1,3}\.\d{1,3}\.\d{1,3}$/.test(addr);
 }
 
+const PASSWORD_AUTH_PATHS = new Set([
+  '/setup',
+  '/login',
+  '/change-email',
+  '/change-password',
+  '/forgot-password',
+  '/reset-password',
+]);
+
+// A public Funnel uses GitHub as the only account authority. Keep password
+// routes available for a local desktop dashboard, but make them unavailable
+// through a *trusted* OAuth gateway request (not merely a spoofable header).
+authRouter.use((req, res, next) => {
+  if (req.method === 'POST' && PASSWORD_AUTH_PATHS.has(req.path) && oauthGatewayUser(req.headers)) {
+    res.status(410).json({ error: { message: 'This FreeLLMAPI instance uses GitHub OAuth. Sign in through GitHub instead.', type: 'oauth_only' } });
+    return;
+  }
+  next();
+});
+
 // Has the dashboard been set up yet, and is this caller authenticated?
 authRouter.get('/status', (req: Request, res: Response) => {
   const session = validateSession(bearer(req));
@@ -77,6 +98,10 @@ authRouter.get('/status', (req: Request, res: Response) => {
     needsSetup: userCount() === 0,
     authenticated: !!session,
     email: session?.email ?? null,
+    // Set only by the trusted loopback OAuth gateway after a valid GitHub login. It
+    // lets the public dashboard omit every password-management control while
+    // the local desktop dashboard remains unchanged.
+    oauthOnly: !!oauthGatewayUser(req.headers),
   });
 });
 

@@ -259,9 +259,7 @@
     "limitHint": "השאירו ריק כדי לא להגביל.",
     "usageThisMonth": "שימוש חודשי",
     "usageEmpty": "אין עדיין בקשות החודש.",
-    "usageRequestsMonth": "{count} בקשות החודש",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} בקשות החודש"
   },
   "strategies": {
     "explore": "חקירת דגמים שטרם נמדדו",

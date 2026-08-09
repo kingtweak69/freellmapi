@@ -9,6 +9,7 @@ import { encrypt, decrypt, maskKey } from '../lib/crypto.js';
 import { parseKeysFromFile, stripJsoncComments, stripTrailingCommas } from '../lib/key-parser.js';
 import { assessProviderUrl } from '../lib/url-guard.js';
 import { verifyCredentials } from '../services/auth.js';
+import { hasOAuthGatewayProof } from '../lib/oauth-gateway.js';
 import { ensureModelInProfiles } from '../services/profile-models.js';
 import { getActiveCooldownsForKeys, clearCooldownsForKey } from '../services/ratelimit.js';
 import { resolveCustomEndpointKey, customEndpointKeyIds, siblingEndpointKeyId, endpointHasCredential } from '../services/custom-endpoint.js';
@@ -352,7 +353,7 @@ keysRouter.delete('/:id/cooldowns', (req: Request, res: Response) => {
 keysRouter.get('/export', (req: Request, res: Response) => {
   const user = (req as any).user;
   const password = req.headers['x-reauth-password'] as string | undefined;
-  if (!password || !verifyCredentials(user.email, password)) {
+  if (!hasOAuthGatewayProof(req.headers) && (!password || !verifyCredentials(user.email, password))) {
     res.status(403).json({ error: { message: 'Password verification required to export keys', type: 'authentication_error' } });
     return;
   }
@@ -469,7 +470,7 @@ keysRouter.get('/export', (req: Request, res: Response) => {
 keysRouter.post('/:id/reveal', (req: Request, res: Response) => {
   const user = (req as any).user;
   const password = req.headers['x-reauth-password'] as string | undefined;
-  if (!password || !verifyCredentials(user.email, password)) {
+  if (!hasOAuthGatewayProof(req.headers) && (!password || !verifyCredentials(user.email, password))) {
     res.status(403).json({ error: { message: 'Password verification required to reveal a key', type: 'authentication_error' } });
     return;
   }

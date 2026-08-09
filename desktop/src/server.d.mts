@@ -20,3 +20,16 @@ export function startServer(opts: StartOptions): Promise<ServerHandle>;
 export function ensureSessionToken(): string;
 export function getDb(): Database.Database;
 export function getUnifiedApiKey(): string;
+export interface GitHubOAuthConfig {
+  publicBaseUrl: string;
+  clientId: string;
+  clientSecret: string;
+  allowedGitHubUsers: string[];
+  port?: number;
+}
+export function startOAuthGateway(options: {
+  config: GitHubOAuthConfig;
+  backendPort: number;
+  dashboardSessionToken: string;
+  reauthToken: string;
+}): Promise<{ port: number }>;

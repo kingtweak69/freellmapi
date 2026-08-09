@@ -6,7 +6,10 @@ import { getAppVersion } from '../lib/app-version.js';
 
 const execFileAsync = promisify(nodeExecFile);
 
-const REPOSITORY = 'tashfeenahmed/freellmapi';
+// Desktop builds from this fork must check this fork's releases/commits. An
+// upstream check would offer an update that discards local features such as the
+// video routes and OAuth gateway.
+const REPOSITORY = process.env.FREEAPI_UPDATE_REPOSITORY ?? 'kingtweak69/freellmapi';
 const CACHE_TTL_MS = 5 * 60 * 1000;
 // Failures are cached too, briefly. Without this a box that cannot reach GitHub
 // re-dials the API and then the Atom feed on every single click.

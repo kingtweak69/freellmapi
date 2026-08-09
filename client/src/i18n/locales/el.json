@@ -259,9 +259,7 @@
     "limitHint": "Αφήστε το κενό για κανένα όριο.",
     "usageThisMonth": "Μηνιαία χρήση",
     "usageEmpty": "Δεν υπάρχουν αιτήματα αυτόν τον μήνα.",
-    "usageRequestsMonth": "{count} αιτήματα αυτόν τον μήνα",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} αιτήματα αυτόν τον μήνα"
   },
   "strategies": {
     "explore": "Εξερεύνηση μη μετρημένων μοντέλων",

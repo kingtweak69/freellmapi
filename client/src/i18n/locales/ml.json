@@ -259,9 +259,7 @@
     "limitHint": "പരിധി വേണ്ടെങ്കിൽ ശൂന്യമായി വിടുക.",
     "usageThisMonth": "പ്രതിമാസ ഉപയോഗം",
     "usageEmpty": "ഈ മാസം ഇതുവരെ അഭ്യർത്ഥനകളില്ല.",
-    "usageRequestsMonth": "ഈ മാസം {count} അഭ്യർത്ഥനകൾ",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "ഈ മാസം {count} അഭ്യർത്ഥനകൾ"
   },
   "strategies": {
     "explore": "അളക്കാത്ത മോഡലുകൾ പര്യവേക്ഷണം ചെയ്യുക",

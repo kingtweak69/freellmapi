@@ -259,9 +259,7 @@
     "limitHint": "ಮಿತಿ ಬೇಡವಾದರೆ ಖಾಲಿ ಬಿಡಿ.",
     "usageThisMonth": "ಮಾಸಿಕ ಬಳಕೆ",
     "usageEmpty": "ಈ ತಿಂಗಳು ಇನ್ನೂ ವಿನಂತಿಗಳಿಲ್ಲ.",
-    "usageRequestsMonth": "ಈ ತಿಂಗಳು {count} ವಿನಂತಿಗಳು",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "ಈ ತಿಂಗಳು {count} ವಿನಂತಿಗಳು"
   },
   "strategies": {
     "explore": "ಅಳೆಯದ ಮಾದರಿಗಳನ್ನು ಅನ್ವೇಷಿಸಿ",

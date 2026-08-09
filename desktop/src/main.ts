@@ -1,7 +1,8 @@
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { app, dialog, ipcMain, clipboard, nativeTheme, shell } from 'electron';
-import { startServer, ensureSessionToken, getUnifiedApiKey } from './server.mjs';
+import { startServer, ensureSessionToken, getUnifiedApiKey, startOAuthGateway, type GitHubOAuthConfig } from './server.mjs';
 import { loadConfig, saveConfig } from './config.js';
 import { buildTray, refreshTrayLocale } from './tray.js';
 import { openDashboard } from './window.js';
@@ -200,6 +201,29 @@ if (!app.requestSingleInstanceLock()) {
       resolvedPort = port;
       saveConfig({ ...cfg, port });
       sessionToken = ensureSessionToken();
+      const oauthSettings = cfg.githubOAuth;
+      if (oauthSettings?.enabled) {
+        const oauth: GitHubOAuthConfig = {
+          publicBaseUrl: oauthSettings.publicBaseUrl ?? '',
+          clientId: oauthSettings.clientId ?? '',
+          clientSecret: oauthSettings.clientSecret ?? '',
+          allowedGitHubUsers: oauthSettings.allowedGitHubUsers ?? [],
+          port: oauthSettings.port,
+        };
+        const reauthToken = crypto.randomBytes(32).toString('hex');
+        process.env.FREEAPI_OAUTH_GATEWAY_TOKEN = reauthToken;
+        try {
+          const gateway = await startOAuthGateway({
+            config: oauth,
+            backendPort: port,
+            dashboardSessionToken: sessionToken,
+            reauthToken,
+          });
+          console.log(`[oauth] GitHub-only public gateway listening on http://127.0.0.1:${gateway.port}`);
+        } catch (error) {
+          console.error('[oauth] Gateway disabled because it could not start:', error);
+        }
+      }
       const tray = buildTray(port, sessionToken, () => locale, () => loadConfig().lanAccess ?? false, toggleLanAccess);
       console.log(`[desktop] FreeLLMAPI running on http://${host}:${port}${cfg.lanAccess ? ' (LAN access enabled)' : ''}`);
 

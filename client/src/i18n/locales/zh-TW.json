@@ -259,9 +259,7 @@
     "limitHint": "留空表示不限制。",
     "usageThisMonth": "每月用量",
     "usageEmpty": "本月尚無請求。",
-    "usageRequestsMonth": "本月 {count} 次請求",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "本月 {count} 次請求"
   },
   "strategies": {
     "explore": "探索未測模型",

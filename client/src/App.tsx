@@ -69,8 +69,8 @@ const modelItems = [
   { to: '/models/chat', labelKey: 'models.chatModelsTab' },
   { to: '/models/embeddings', labelKey: 'models.embeddingsTab' },
   { to: '/models/image', labelKey: 'models.imageTab' },
-  { to: '/models/audio', labelKey: 'models.audioTab' },
   { to: '/models/video', labelKey: 'models.videoTab' },
+  { to: '/models/audio', labelKey: 'models.audioTab' },
   { to: '/models/fusion', labelKey: 'models.fusionTab' },
 ]
 
@@ -139,6 +139,7 @@ function AccountMenuItems({
   onChangeEmail: () => void
   onChangePassword: () => void
 }) {
+  const isOAuthOnly = typeof document !== 'undefined' && document.documentElement.dataset.freeapiOauth === 'true'
   return (
     <>
       {showUpgrade && (
@@ -153,7 +154,7 @@ function AccountMenuItems({
       </DropdownMenuItem>
       {/* Desktop signs in with a hidden local account, so it has no credentials
           to change and no session to end. */}
-      {!isDesktopApp && (
+      {!isDesktopApp && !isOAuthOnly && (
         <>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={onChangeEmail}>
@@ -165,6 +166,15 @@ function AccountMenuItems({
             {changePasswordLabel}
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => logout()}>
+            <LogOut />
+            {signOutLabel}
+          </DropdownMenuItem>
+        </>
+      )}
+      {!isDesktopApp && isOAuthOnly && (
+        <>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => { window.location.assign('/oauth/logout') }}>
             <LogOut />
             {signOutLabel}
           </DropdownMenuItem>
@@ -358,11 +368,11 @@ function App() {
                       <Route path="/models/embeddings/:id" element={<EmbeddingDetailPage />} />
                       <Route path="/models/image" element={<ImagePage />} />
                       <Route path="/models/image/:id" element={<MediaDetailPage modality="image" />} />
+                      <Route path="/models/video" element={<VideoPage />} />
+                      <Route path="/models/video/:id" element={<MediaDetailPage modality="video" />} />
                       <Route path="/models/audio" element={<AudioPage />} />
                       <Route path="/models/audio/:id" element={<MediaDetailPage modality="audio" />} />
                       <Route path="/models/transcription/:id" element={<MediaDetailPage modality="transcription" />} />
-                      <Route path="/models/video" element={<VideoPage />} />
-                      <Route path="/models/video/:id" element={<MediaDetailPage modality="video" />} />
                       <Route path="/playground" element={<PlaygroundPage />} />
                       <Route path="/keys" element={<KeysPage />} />
                       <Route path="/agents" element={<AgentsPage />} />

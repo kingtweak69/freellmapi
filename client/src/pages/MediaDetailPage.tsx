@@ -53,19 +53,18 @@ export default function MediaDetailPage({ modality }: { modality: 'image' | 'aud
     "prompt": "a red cat"
   }'`
     : modality === 'video'
-      ? `curl ${base}/videos/generations \\
-  -H "Authorization: ******" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "${exampleModel}",
-    "prompt": "a cat playing in the garden"
-  }'`
+      ? `curl -X POST ${base}/videos \\
+  -H "Authorization: Bearer ${key}" \\
+  -F model="${exampleModel}" \\
+  -F prompt="A cinematic tracking shot of a red cat" \\
+  -F size="1280x720" \\
+  -F seconds="8"`
     : modality === 'transcription'
-        ? `curl ${base}/audio/transcriptions \\
+      ? `curl ${base}/audio/transcriptions \\
   -H "Authorization: Bearer ${key}" \\
   -F file=@audio.mp3 \\
   -F model="${exampleModel}"`
-        : `curl ${base}/audio/speech \\
+      : `curl ${base}/audio/speech \\
   -H "Authorization: Bearer ${key}" \\
   -H "Content-Type: application/json" \\
   -d '{

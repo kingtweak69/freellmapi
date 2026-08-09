@@ -259,9 +259,7 @@
     "limitHint": "ကန့်သတ်ချက်မလိုပါက ကွက်လပ်ထားပါ။",
     "usageThisMonth": "လစဉ်အသုံးပြုမှု",
     "usageEmpty": "ဤလတွင် တောင်းဆိုမှု မရှိသေးပါ။",
-    "usageRequestsMonth": "ဤလတွင် တောင်းဆိုမှု {count} ခု",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "ဤလတွင် တောင်းဆိုမှု {count} ခု"
   },
   "strategies": {
     "explore": "မတိုင်းတာရသေးသော မော်ဒယ်များကို စူးစမ်းရန်",

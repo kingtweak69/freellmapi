@@ -33,6 +33,7 @@ export function CopyKeyDialog({
   // Only set when the clipboard refused: the key is on screen for a manual
   // copy, and disappears again with the dialog.
   const [revealed, setRevealed] = useState<string | null>(null)
+  const oauthOnly = typeof document !== 'undefined' && document.documentElement.dataset.freeapiOauth === 'true'
 
   async function submit(e: FormEvent) {
     e.preventDefault()
@@ -41,7 +42,7 @@ export function CopyKeyDialog({
     try {
       const { key } = await apiFetch<{ key: string }>(`/api/keys/${keyId}/reveal`, {
         method: 'POST',
-        headers: { 'x-reauth-password': password },
+        headers: oauthOnly ? undefined : { 'x-reauth-password': password },
       })
       // A plain-HTTP LAN origin has no Clipboard API at all, so this falls back
       // to execCommand rather than throwing (#734). If even that fails the key
@@ -75,7 +76,7 @@ export function CopyKeyDialog({
         </code>
 
         <form onSubmit={submit} className="mt-4 space-y-4">
-          <div className="space-y-1.5">
+          {!oauthOnly && <div className="space-y-1.5">
             <Label className="text-xs" htmlFor="reveal-password">{t('auth.password')}</Label>
             <Input
               id="reveal-password"
@@ -87,13 +88,13 @@ export function CopyKeyDialog({
               aria-invalid={!!error}
             />
             <FieldError error={error} />
-          </div>
+          </div>}
 
           <div className="flex items-center justify-end gap-2">
             <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)}>
               {t('common.cancel')}
             </Button>
-            <Button type="submit" size="sm" disabled={!password || busy}>
+            <Button type="submit" size="sm" disabled={(!oauthOnly && !password) || busy}>
               <Copy className="size-3.5" />
               {t('keys.copyKey')}
             </Button>

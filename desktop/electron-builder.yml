@@ -16,7 +16,7 @@ files:
 # attaches the files itself. See #703.
 publish:
   provider: github
-  owner: tashfeenahmed
+  owner: kingtweak69
   repo: freellmapi
 asar: true
 asarUnpack:

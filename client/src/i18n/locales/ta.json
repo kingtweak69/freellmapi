@@ -259,9 +259,7 @@
     "limitHint": "வரம்பு வேண்டாம் எனில் காலியாக விடவும்.",
     "usageThisMonth": "மாதாந்திர பயன்பாடு",
     "usageEmpty": "இந்த மாதம் இதுவரை கோரிக்கைகள் இல்லை.",
-    "usageRequestsMonth": "இந்த மாதம் {count} கோரிக்கை",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "இந்த மாதம் {count} கோரிக்கை"
   },
   "strategies": {
     "explore": "அளவிடப்படாத மாதிரிகளை ஆராயுங்கள்",

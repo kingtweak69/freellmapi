@@ -259,9 +259,7 @@
     "limitHint": "La stå tomt for ingen grense.",
     "usageThisMonth": "Månedlig bruk",
     "usageEmpty": "Ingen forespørsler denne måneden ennå.",
-    "usageRequestsMonth": "{count} forespørsler denne måneden",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} forespørsler denne måneden"
   },
   "strategies": {
     "explore": "Utforsk umålte modeller",

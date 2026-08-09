@@ -1,0 +1,180 @@
+import crypto from 'crypto';
+import { getDb } from '../db/index.js';
+import { getClientContext } from '../lib/client-context.js';
+import { decrypt } from '../lib/crypto.js';
+import { proxyFetch } from '../lib/proxy.js';
+import { MediaError, type MediaModelRow } from './media.js';
+
+const VIDEO_TIMEOUT_MS = 120_000;
+
+interface Credential { id: number; key: string; baseUrl: string }
+interface JobRow { upstream_id: string; key_id: number | null; media_model_id: number }
+
+export interface VideoCreateParams {
+  prompt: string;
+  size?: string;
+  seconds?: string;
+}
+
+function rows(model?: string): MediaModelRow[] {
+  const all = getDb().prepare("SELECT * FROM media_models WHERE modality = 'video' AND enabled = 1 ORDER BY priority, id").all() as MediaModelRow[];
+  if (!all.length) throw new MediaError('No enabled video providers configured.', 503, 'no_video_models');
+  if (!model || model === 'auto') return all;
+  const exact = all.filter(row => row.model_id === model);
+  if (!exact.length) throw new MediaError(`Unknown video model '${model}'. Use 'auto' or a provider model id.`, 400);
+  return exact;
+}
+
+function credential(row: MediaModelRow): Credential | null {
+  if (row.platform !== 'custom' || row.key_id == null) return null;
+  const key = getDb().prepare("SELECT id, encrypted_key, iv, auth_tag, base_url FROM api_keys WHERE id = ? AND enabled = 1 AND status IN ('healthy', 'unknown')").get(row.key_id) as
+    { id: number; encrypted_key: string; iv: string; auth_tag: string; base_url: string | null } | undefined;
+  if (!key?.base_url) return null;
+  try {
+    return { id: key.id, key: decrypt(key.encrypted_key, key.iv, key.auth_tag), baseUrl: key.base_url.replace(/\/+$/, '') };
+  } catch { return null; }
+}
+
+async function upstream(url: string, cred: Credential, init: RequestInit): Promise<Response> {
+  const response = await proxyFetch(url, { ...init, signal: AbortSignal.timeout(VIDEO_TIMEOUT_MS) }, 'custom', 'video', VIDEO_TIMEOUT_MS);
+  if (!response.ok) {
+    const body = await response.text().catch(() => '');
+    throw new MediaError(`custom ${response.status}: ${body.slice(0, 300)}`, response.status);
+  }
+  return response;
+}
+
+function auth(cred: Credential): Record<string, string> {
+  return { Authorization: `Bearer ${cred.key || 'no-key'}` };
+}
+
+/**
+ * OpenRouter exposes the same asynchronous /videos resource as the generic
+ * OpenAI-style adapter, but deliberately accepts a JSON body rather than
+ * multipart form data. Keep the generic multipart wire format for other
+ * custom providers, and use OpenRouter's normalized field names here.
+ */
+function isOpenRouter(cred: Credential): boolean {
+  try {
+    return new URL(cred.baseUrl).hostname.toLowerCase() === 'openrouter.ai';
+  } catch {
+    return false;
+  }
+}
+
+function openRouterVideoBody(model: string, params: VideoCreateParams): string {
+  const body: Record<string, string | number> = {
+    model,
+    prompt: params.prompt,
+  };
+  if (params.size) body.size = params.size;
+  if (params.seconds) {
+    const duration = Number(params.seconds);
+    if (!Number.isInteger(duration) || duration <= 0) {
+      throw new MediaError('`seconds` must be a positive integer for OpenRouter video generation.', 400);
+    }
+    // OpenRouter calls this duration; the gateway keeps the OpenAI-compatible
+    // `seconds` input name at its public boundary.
+    body.duration = duration;
+  }
+  return JSON.stringify(body);
+}
+
+/**
+ * Encode our multipart request before it reaches proxyFetch. Native fetch can
+ * send FormData directly, but the SOCKS transport deliberately uses
+ * http.request(), whose write() only accepts strings or byte buffers. Turning
+ * the form into an ordinary byte body here makes direct, HTTP-proxy, and SOCKS
+ * routes behave identically while retaining fetch's generated multipart
+ * boundary in Content-Type.
+ */
+async function encodeVideoForm(url: string, form: FormData, headers: Record<string, string>): Promise<{
+  headers: Record<string, string>;
+  body: Buffer;
+}> {
+  const request = new Request(url, { method: 'POST', headers, body: form });
+  return {
+    headers: Object.fromEntries(request.headers.entries()),
+    body: Buffer.from(await request.arrayBuffer()),
+  };
+}
+
+function log(row: MediaModelRow, keyId: number, status: 'success' | 'error', latency: number, error: string | null): void {
+  try {
+    const client = getClientContext();
+    getDb().prepare(`INSERT INTO requests
+      (platform, model_id, key_id, status, input_tokens, output_tokens, latency_ms, error, request_type, client_ip, client_user_agent, client_agent)
+      VALUES (?, ?, ?, ?, 0, 0, ?, ?, 'video', ?, ?, ?)`)
+      .run(row.platform, row.model_id, keyId, status, latency, error, client.ip, client.userAgent, client.agent);
+  } catch { /* request logging must not break video generation */ }
+}
+
+export async function createVideo(model: string | undefined, params: VideoCreateParams): Promise<Record<string, unknown>> {
+  let last: MediaError | null = null;
+  for (const row of rows(model)) {
+    const cred = credential(row);
+    if (!cred) continue;
+    const started = Date.now();
+    try {
+      const url = `${cred.baseUrl}/videos`;
+      const response = isOpenRouter(cred)
+        ? await upstream(url, cred, {
+          method: 'POST',
+          headers: { ...auth(cred), 'Content-Type': 'application/json' },
+          body: openRouterVideoBody(row.model_id, params),
+        })
+        : await (async () => {
+          const form = new FormData();
+          form.append('model', row.model_id);
+          form.append('prompt', params.prompt);
+          if (params.size) form.append('size', params.size);
+          if (params.seconds) form.append('seconds', params.seconds);
+          const encoded = await encodeVideoForm(url, form, auth(cred));
+          return upstream(url, cred, { method: 'POST', headers: encoded.headers, body: encoded.body });
+        })();
+      const job = await response.json() as Record<string, unknown>;
+      const upstreamId = typeof job.id === 'string' ? job.id : '';
+      if (!upstreamId) throw new MediaError('upstream returned no video job id', 502);
+      const publicId = `video_${crypto.randomUUID().replace(/-/g, '')}`;
+      getDb().prepare('INSERT INTO video_jobs (public_id, upstream_id, media_model_id, key_id) VALUES (?, ?, ?, ?)')
+        .run(publicId, upstreamId, row.id, cred.id);
+      log(row, cred.id, 'success', Date.now() - started, null);
+      return { ...job, id: publicId, model: row.model_id, provider: row.platform };
+    } catch (error: any) {
+      last = error instanceof MediaError ? error : new MediaError(String(error?.message ?? error), 502);
+      log(row, cred.id, 'error', Date.now() - started, last.message.slice(0, 300));
+    }
+  }
+  throw new MediaError(`All video providers failed${last ? ` (last: ${last.message.slice(0, 160)})` : ' (no usable keys)'}.`, last?.status === 429 ? 429 : 502);
+}
+
+function resolveJob(publicId: string): { job: JobRow; row: MediaModelRow; cred: Credential } {
+  const job = getDb().prepare('SELECT upstream_id, key_id, media_model_id FROM video_jobs WHERE public_id = ?').get(publicId) as JobRow | undefined;
+  if (!job) throw new MediaError(`Unknown video '${publicId}'.`, 404);
+  const row = getDb().prepare('SELECT * FROM media_models WHERE id = ?').get(job.media_model_id) as MediaModelRow | undefined;
+  if (!row) throw new MediaError('The provider for this video is no longer configured.', 410);
+  const cred = credential(row);
+  if (!cred || cred.id !== job.key_id) throw new MediaError('The credential used for this video is unavailable.', 503);
+  return { job, row, cred };
+}
+
+export async function getVideo(publicId: string): Promise<Record<string, unknown>> {
+  const { job, row, cred } = resolveJob(publicId);
+  const response = await upstream(`${cred.baseUrl}/videos/${encodeURIComponent(job.upstream_id)}`, cred, { headers: auth(cred) });
+  const value = await response.json() as Record<string, unknown>;
+  return { ...value, id: publicId, model: row.model_id, provider: row.platform };
+}
+
+export async function getVideoContent(publicId: string): Promise<{ body: Buffer; contentType: string }> {
+  const { job, cred } = resolveJob(publicId);
+  const response = await upstream(`${cred.baseUrl}/videos/${encodeURIComponent(job.upstream_id)}/content`, cred, { headers: auth(cred) });
+  return { body: Buffer.from(await response.arrayBuffer()), contentType: response.headers.get('content-type') || 'video/mp4' };
+}
+
+export async function deleteVideo(publicId: string): Promise<Record<string, unknown>> {
+  const { job, cred } = resolveJob(publicId);
+  const response = await upstream(`${cred.baseUrl}/videos/${encodeURIComponent(job.upstream_id)}`, cred, { method: 'DELETE', headers: auth(cred) });
+  const value = await response.json().catch(() => ({ deleted: true })) as Record<string, unknown>;
+  getDb().prepare('DELETE FROM video_jobs WHERE public_id = ?').run(publicId);
+  return { ...value, id: publicId };
+}

@@ -201,6 +201,28 @@ export const openapiSpec = {
         },
       },
     },
+    '/v1/videos': {
+      post: {
+        tags: ['Media'], operationId: 'createVideo', summary: 'Create an asynchronous video generation job',
+        description: 'OpenAI-compatible video creation. Poll the returned id at GET /v1/videos/{video_id}, then download /content.',
+        requestBody: { required: true, content: {
+          'multipart/form-data': { schema: { type: 'object', required: ['prompt'], properties: {
+            model: { type: 'string', default: 'auto' }, prompt: { type: 'string' }, size: { type: 'string' }, seconds: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
+          } } },
+          'application/json': { schema: { type: 'object', required: ['prompt'], properties: {
+            model: { type: 'string', default: 'auto' }, prompt: { type: 'string' }, size: { type: 'string' }, seconds: { oneOf: [{ type: 'string' }, { type: 'integer' }] },
+          } } },
+        } },
+        responses: { '202': { description: 'Queued video job.' }, '400': { $ref: '#/components/responses/BadRequest' }, '401': { $ref: '#/components/responses/Unauthorized' }, '502': { $ref: '#/components/responses/UpstreamError' } },
+      },
+    },
+    '/v1/videos/{video_id}': {
+      get: { tags: ['Media'], operationId: 'getVideo', summary: 'Retrieve video job status', parameters: [{ name: 'video_id', in: 'path', required: true, schema: { type: 'string' } }], responses: { '200': { description: 'Video job.' }, '404': { $ref: '#/components/responses/BadRequest' } } },
+      delete: { tags: ['Media'], operationId: 'deleteVideo', summary: 'Delete a video job', parameters: [{ name: 'video_id', in: 'path', required: true, schema: { type: 'string' } }], responses: { '200': { description: 'Deleted.' } } },
+    },
+    '/v1/videos/{video_id}/content': {
+      get: { tags: ['Media'], operationId: 'downloadVideo', summary: 'Download completed video content', parameters: [{ name: 'video_id', in: 'path', required: true, schema: { type: 'string' } }], responses: { '200': { description: 'MP4 video bytes.', content: { 'video/mp4': { schema: { type: 'string', format: 'binary' } } } } } },
+    },
     '/v1/audio/transcriptions': {
       post: {
         tags: ['Media'],

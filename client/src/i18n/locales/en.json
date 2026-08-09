@@ -168,9 +168,11 @@
     "fusionTab": "Fusion",
     "embeddingsTab": "Embeddings",
     "imageTab": "Image",
+    "videoTab": "Video",
     "audioTab": "Audio",
     "imageDesc": "Text-to-image generation models.",
     "audioDesc": "Text-to-speech and speech-to-text models.",
+    "videoDesc": "Asynchronous text-to-video models with job polling and MP4 downloads.",
     "mediaHint": "Generate via",
     "mediaEmpty": "No models yet. They sync from the catalog.",
     "ttsHeading": "Text to speech",
@@ -259,9 +261,7 @@
     "limitHint": "Leave blank for no limit.",
     "usageThisMonth": "Monthly usage",
     "usageEmpty": "No requests yet this month.",
-    "usageRequestsMonth": "{count} req this month",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} req this month"
   },
   "strategies": {
     "explore": "Explore unmeasured models",
@@ -405,6 +405,7 @@
     "customTypeEmbedding": "Embedding",
     "customTypeImage": "Image",
     "customTypeAudio": "Audio",
+    "customTypeVideo": "Video",
     "customBaseUrl": "Base URL",
     "customModels": "Models",
     "customModel": "Model",
@@ -421,6 +422,7 @@
     "addEmbeddingModel": "Add embedding",
     "addImageModel": "Add image model",
     "addAudioModel": "Add audio model",
+    "addVideoModel": "Add video model",
     "addingCustom": "Adding…",
     "discoverModels": "Fetch models",
     "probeNow": "Probe endpoint",

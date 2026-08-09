@@ -25,8 +25,7 @@ const CUSTOM_MODEL_ENDPOINT_IDENTITY_FILENAME = '20260729_000001_custom_model_en
 const CUSTOM_ENDPOINT_HOST_LABELS_FILENAME = '20260802_000001_custom_endpoint_host_labels.ts';
 const KEY_MODEL_SCOPE_FILENAME = '20260805_000001_key_model_scope.ts';
 const CLIENT_PROFILES_FILENAME = '20260805_000002_client_profiles.ts';
-const WAN27_MINIMAX_H3_FILENAME = '20260808_000001_wan27_minimax_h3.ts';
-const WAN27_VIDEO_MEDIA_FILENAME = '20260808_000002_wan27_video_media.ts';
+const VIDEO_JOBS_FILENAME = '20260808_000001_video_jobs.ts';
 
 interface SchemaRow {
   type: string;
@@ -98,8 +97,7 @@ describe('migration round trip', () => {
         CUSTOM_ENDPOINT_HOST_LABELS_FILENAME,
         KEY_MODEL_SCOPE_FILENAME,
         CLIENT_PROFILES_FILENAME,
-        WAN27_MINIMAX_H3_FILENAME,
-        WAN27_VIDEO_MEDIA_FILENAME,
+        VIDEO_JOBS_FILENAME,
       ]);
     } finally {
       db.close();

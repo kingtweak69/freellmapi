@@ -1,0 +1,10 @@
+{
+  "githubOAuth": {
+    "enabled": true,
+    "publicBaseUrl": "https://tweakomputer.tail32d35c.ts.net:10000",
+    "clientId": "YOUR_GITHUB_OAUTH_CLIENT_ID",
+    "clientSecret": "YOUR_GITHUB_OAUTH_CLIENT_SECRET",
+    "allowedGitHubUsers": ["kingtweak69"],
+    "port": 31416
+  }
+}

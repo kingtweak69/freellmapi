@@ -259,9 +259,7 @@
     "limitHint": "Kosongkan untuk tanpa batas.",
     "usageThisMonth": "Penggunaan bulanan",
     "usageEmpty": "Belum ada permintaan bulan ini.",
-    "usageRequestsMonth": "{count} permintaan bulan ini",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} permintaan bulan ini"
   },
   "strategies": {
     "explore": "Jelajahi model yang belum terukur",

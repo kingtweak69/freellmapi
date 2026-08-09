@@ -11,6 +11,18 @@ export interface DesktopConfig {
   // on the LAN / Tailscale can reach it (#442, #418). Off by default: exposes
   // the API, guarded only by the unified key. Applied at next server start.
   lanAccess?: boolean;
+  /**
+   * Optional public OAuth edge. The client secret belongs only on the machine
+   * hosting the Funnel; it is never bundled into an installer or release.
+   */
+  githubOAuth?: {
+    enabled?: boolean;
+    publicBaseUrl?: string;
+    clientId?: string;
+    clientSecret?: string;
+    allowedGitHubUsers?: string[];
+    port?: number;
+  };
 }
 
 function configPath(): string {

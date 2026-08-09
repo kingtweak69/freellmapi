@@ -29,7 +29,7 @@ function parseModelList(raw: string): string[] {
 export function CustomProviderSection({ onAdded }: { onAdded?: () => void } = {}) {
   const { t } = useI18n()
   const queryClient = useQueryClient()
-  const [customType, setCustomType] = useState<'chat' | 'embedding' | 'image' | 'audio'>('chat')
+  const [customType, setCustomType] = useState<'chat' | 'embedding' | 'image' | 'audio' | 'video'>('chat')
   const [baseUrl, setBaseUrl] = useState('')
   const [model, setModel] = useState('')
   const [displayName, setDisplayName] = useState('')
@@ -130,14 +130,14 @@ export function CustomProviderSection({ onAdded }: { onAdded?: () => void } = {}
       ? 'text-embedding-3-small'
       : customType === 'image'
         ? 'gpt-image-1'
-        : 'gpt-4o-mini-tts'
+        : customType === 'video' ? 'sora-2' : 'gpt-4o-mini-tts'
   const addLabel = customType === 'chat'
     ? (multiple ? t('keys.addModels', { count: models.length }) : t('keys.addModel'))
     : customType === 'embedding'
       ? t('keys.addEmbeddingModel')
       : customType === 'image'
         ? t('keys.addImageModel')
-        : t('keys.addAudioModel')
+        : customType === 'video' ? t('keys.addVideoModel') : t('keys.addAudioModel')
 
   const form = (
       <form onSubmit={submit} className="flex flex-wrap items-end gap-3">
@@ -151,6 +151,7 @@ export function CustomProviderSection({ onAdded }: { onAdded?: () => void } = {}
               <SelectItem value="chat">{t('keys.customTypeChat')}</SelectItem>
               <SelectItem value="embedding">{t('keys.customTypeEmbedding')}</SelectItem>
               <SelectItem value="image">{t('keys.customTypeImage')}</SelectItem>
+              <SelectItem value="video">{t('keys.customTypeVideo')}</SelectItem>
               <SelectItem value="audio">{t('keys.customTypeAudio')}</SelectItem>
             </SelectContent>
           </Select>

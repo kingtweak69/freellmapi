@@ -3,7 +3,7 @@ import type { Express } from 'express';
 import { createApp } from '../../app.js';
 import { initDb } from '../../db/index.js';
 
-async function call(app: Express, method: string, path: string, body?: any, token?: string) {
+async function call(app: Express, method: string, path: string, body?: any, token?: string, extraHeaders: Record<string, string> = {}) {
   const server = app.listen(0);
   const addr = server.address() as any;
   const res = await fetch(`http://127.0.0.1:${addr.port}${path}`, {
@@ -11,6 +11,7 @@ async function call(app: Express, method: string, path: string, body?: any, toke
     headers: {
       ...(body ? { 'Content-Type': 'application/json' } : {}),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      ...extraHeaders,
     },
     body: body ? JSON.stringify(body) : undefined,
   });
@@ -97,5 +98,30 @@ describe('Dashboard auth (#35)', () => {
       expect((await call(app, 'POST', '/api/auth/login', creds)).status).toBe(401);
     }
     expect((await call(app, 'POST', '/api/auth/login', creds)).status).toBe(429);
+  });
+
+  it('removes every password account route for a trusted OAuth gateway', async () => {
+    const previousProof = process.env.FREEAPI_OAUTH_GATEWAY_TOKEN;
+    process.env.FREEAPI_OAUTH_GATEWAY_TOKEN = 'trusted-oauth-proof';
+    const oauthHeaders = {
+      'x-freeapi-oauth-user': 'kingtweak69',
+      'x-freeapi-oauth-reauth': 'trusted-oauth-proof',
+    };
+
+    try {
+      const status = await call(app, 'GET', '/api/auth/status', undefined, token, oauthHeaders);
+      expect(status.body).toMatchObject({ authenticated: true, oauthOnly: true });
+
+      for (const path of ['/api/auth/login', '/api/auth/setup', '/api/auth/forgot-password', '/api/auth/reset-password']) {
+        const response = await call(app, 'POST', path, { email: 'admin@example.com', password: 'supersecret' }, token, oauthHeaders);
+        expect(response.status).toBe(410);
+        expect(response.body.error.type).toBe('oauth_only');
+      }
+      expect((await call(app, 'POST', '/api/auth/change-email', { currentPassword: 'supersecret', newEmail: 'new@example.com' }, token, oauthHeaders)).status).toBe(410);
+      expect((await call(app, 'POST', '/api/auth/change-password', { currentPassword: 'supersecret', newPassword: 'another-secret' }, token, oauthHeaders)).status).toBe(410);
+    } finally {
+      if (previousProof === undefined) delete process.env.FREEAPI_OAUTH_GATEWAY_TOKEN;
+      else process.env.FREEAPI_OAUTH_GATEWAY_TOKEN = previousProof;
+    }
   });
 });

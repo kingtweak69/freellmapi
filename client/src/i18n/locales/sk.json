@@ -259,9 +259,7 @@
     "limitHint": "Ponechajte prázdne pre žiadny limit.",
     "usageThisMonth": "Mesačná spotreba",
     "usageEmpty": "Tento mesiac zatiaľ žiadne požiadavky.",
-    "usageRequestsMonth": "{count} pož. tento mesiac",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} pož. tento mesiac"
   },
   "strategies": {
     "explore": "Preskúmavať nezmerané modely",

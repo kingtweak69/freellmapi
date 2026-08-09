@@ -259,9 +259,7 @@
     "limitHint": "დატოვეთ ცარიელი ლიმიტის გარეშე.",
     "usageThisMonth": "თვიური მოხმარება",
     "usageEmpty": "ამ თვეში ჯერ მოთხოვნები არ არის.",
-    "usageRequestsMonth": "{count} მოთხოვნა ამ თვეში",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} მოთხოვნა ამ თვეში"
   },
   "strategies": {
     "explore": "გაუზომავი მოდელების შესწავლა",

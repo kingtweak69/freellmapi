@@ -167,19 +167,10 @@ export function MediaModelsView({ modality }: { modality: 'image' | 'audio' | 'v
   const groups = groupMedia(models.filter(m => m.modality === modality))
   const sttGroups = groupMedia(models.filter(m => m.modality === 'transcription'))
   // Every models tab shares one title; the tab bar above says which set you are
-  // looking at, so repeating "Image"/"Audio"/"Video" here just competed with it.
+  // looking at, so repeating "Image"/"Audio" here just competed with it.
   const title = t('models.title')
-  const description = modality === 'image'
-    ? t('models.imageDesc')
-    : modality === 'video'
-      ? t('models.videoDesc')
-      : t('models.audioDesc')
-  const endpoint = modality === 'image'
-    ? '/v1/images/generations'
-    : modality === 'video'
-      ? '/v1/videos/generations'
-      : '/v1/audio/speech'
-  const emptyIcon = modality === 'image' ? ImageIcon : modality === 'video' ? Video : AudioLines
+  const description = modality === 'image' ? t('models.imageDesc') : modality === 'video' ? t('models.videoDesc') : t('models.audioDesc')
+  const endpoint = modality === 'image' ? '/v1/images/generations' : modality === 'video' ? '/v1/videos' : '/v1/audio/speech'
 
   const renderGroups = (gs: MediaGroup[], detailBase: string) => gs.map(g => (
     <MediaGroupCard
@@ -226,7 +217,7 @@ export function MediaModelsView({ modality }: { modality: 'image' | 'audio' | 'v
           </>
         ) : groups.length === 0 ? (
           <EmptyState
-            icon={emptyIcon}
+            icon={modality === 'image' ? ImageIcon : modality === 'video' ? Video : AudioLines}
             title={t('models.mediaEmpty')}
           />
         ) : (

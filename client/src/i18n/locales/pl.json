@@ -259,9 +259,7 @@
     "limitHint": "Pozostaw puste, aby nie było limitu.",
     "usageThisMonth": "Zużycie miesięczne",
     "usageEmpty": "Brak żądań w tym miesiącu.",
-    "usageRequestsMonth": "{count} żąd. w tym miesiącu",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} żąd. w tym miesiącu"
   },
   "strategies": {
     "explore": "Eksploruj niezmierzone modele",

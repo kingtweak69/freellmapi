@@ -259,9 +259,7 @@
     "limitHint": "Limit olmaması üçün boş buraxın.",
     "usageThisMonth": "Aylıq istifadə",
     "usageEmpty": "Bu ay hələ sorğu yoxdur.",
-    "usageRequestsMonth": "bu ay {count} sorğu",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "bu ay {count} sorğu"
   },
   "strategies": {
     "explore": "Ölçülməmiş modelləri araşdır",

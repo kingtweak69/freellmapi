@@ -259,9 +259,7 @@
     "limitHint": "برای بدون محدودیت خالی بگذارید.",
     "usageThisMonth": "مصرف ماهانه",
     "usageEmpty": "هنوز درخواستی در این ماه نیست.",
-    "usageRequestsMonth": "{count} درخواست این ماه",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} درخواست این ماه"
   },
   "strategies": {
     "explore": "کاوش مدل‌های اندازه‌گیری‌نشده",

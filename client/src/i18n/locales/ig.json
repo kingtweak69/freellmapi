@@ -259,9 +259,7 @@
     "limitHint": "Hapụ ya efu ka enweghị oke.",
     "usageThisMonth": "Ojiji kwa ọnwa",
     "usageEmpty": "Enweghị arịrịọ ọ bụla ọnwa a.",
-    "usageRequestsMonth": "arịrịọ {count} ọnwa a",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "arịrịọ {count} ọnwa a"
   },
   "strategies": {
     "explore": "Nyochaa ụdị a na-atụbeghị",

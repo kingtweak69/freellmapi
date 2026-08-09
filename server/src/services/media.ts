@@ -30,7 +30,7 @@ export const TRANSCRIPTION_PLATFORMS = new Set(['groq', 'cloudflare']);
 // catalog-sync), never via migrations. Their per-model adapter metadata
 // (native subtitle formats, upload ceiling, request flavor) rides in the
 // meta_json column — see TranscriptionMeta below.
-export type MediaModality = 'image' | 'audio' | 'transcription';
+export type MediaModality = 'image' | 'audio' | 'transcription' | 'video';
 
 export interface MediaModelRow {
   id: number;

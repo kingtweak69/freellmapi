@@ -55,7 +55,7 @@ describe('GET /api/media/usage', () => {
 
   it('rejects a missing or unknown modality', async () => {
     expect((await get(app, '/api/media/usage')).status).toBe(400);
-    expect((await get(app, '/api/media/usage?modality=text')).status).toBe(400);
+    expect((await get(app, '/api/media/usage?modality=video')).status).toBe(400);
   });
 
   it('counts this month\'s requests per model and separates today', async () => {

@@ -109,7 +109,7 @@ describe('Update API', () => {
         checkedAt: '2026-07-28T14:00:00.000Z',
       });
       expect(fetchMock).toHaveBeenCalledWith(
-        `https://api.github.com/repos/tashfeenahmed/freellmapi/compare/${LOCAL_SHA}...main`,
+        `https://api.github.com/repos/kingtweak69/freellmapi/compare/${LOCAL_SHA}...main`,
         expect.any(Object),
       );
     });
@@ -212,7 +212,7 @@ describe('Update API', () => {
       });
       expect(fetchMock).toHaveBeenNthCalledWith(
         2,
-        'https://github.com/tashfeenahmed/freellmapi/commits/main.atom',
+        'https://github.com/kingtweak69/freellmapi/commits/main.atom',
         expect.any(Object),
       );
     });

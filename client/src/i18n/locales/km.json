@@ -259,9 +259,7 @@
     "limitHint": "ទុកឱ្យទទេ ដើម្បីគ្មានដែនកំណត់។",
     "usageThisMonth": "ការប្រើប្រាស់ប្រចាំខែ",
     "usageEmpty": "មិនទាន់មានសំណើនៅខែនេះទេ។",
-    "usageRequestsMonth": "ខែនេះ {count} សំណើ",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "ខែនេះ {count} សំណើ"
   },
   "strategies": {
     "explore": "ស្វែងរកម៉ូដែលដែលមិនទាន់វាស់វែង",

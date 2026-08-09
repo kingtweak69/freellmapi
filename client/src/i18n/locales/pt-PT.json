@@ -259,9 +259,7 @@
     "limitHint": "Deixe em branco para não ter limite.",
     "usageThisMonth": "Utilização mensal",
     "usageEmpty": "Ainda não há pedidos este mês.",
-    "usageRequestsMonth": "{count} ped. este mês",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} ped. este mês"
   },
   "strategies": {
     "explore": "Explorar modelos sem medições",

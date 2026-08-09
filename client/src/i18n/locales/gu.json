@@ -259,9 +259,7 @@
     "limitHint": "કોઈ મર્યાદા ન રાખવા ખાલી છોડો.",
     "usageThisMonth": "માસિક વપરાશ",
     "usageEmpty": "આ મહિને હજી કોઈ વિનંતી નથી.",
-    "usageRequestsMonth": "આ મહિને {count} વિનંતી",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "આ મહિને {count} વિનંતી"
   },
   "strategies": {
     "explore": "માપ્યા વગરના મોડલ્સ એક્સપ્લોર કરો",

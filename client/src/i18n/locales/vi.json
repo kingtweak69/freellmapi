@@ -259,9 +259,7 @@
     "limitHint": "Để trống nếu không giới hạn.",
     "usageThisMonth": "Mức dùng hằng tháng",
     "usageEmpty": "Chưa có yêu cầu nào trong tháng này.",
-    "usageRequestsMonth": "{count} yêu cầu tháng này",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} yêu cầu tháng này"
   },
   "strategies": {
     "explore": "Khám phá các mô hình chưa được đo",

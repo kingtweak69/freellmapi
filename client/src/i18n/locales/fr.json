@@ -259,9 +259,7 @@
     "limitHint": "Laissez vide pour aucune limite.",
     "usageThisMonth": "Utilisation mensuelle",
     "usageEmpty": "Aucune requête ce mois-ci pour l'instant.",
-    "usageRequestsMonth": "{count} req. ce mois-ci",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} req. ce mois-ci"
   },
   "strategies": {
     "explore": "Explorer les modèles non mesurés",

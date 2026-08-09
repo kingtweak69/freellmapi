@@ -70,6 +70,7 @@ export const CUSTOM_MODEL_KIND_LABEL: Record<ApiKeyModel['kind'], string> = {
   chat: 'keys.customTypeChat',
   embedding: 'keys.customTypeEmbedding',
   image: 'keys.customTypeImage',
+  video: 'keys.customTypeVideo',
   audio: 'keys.customTypeAudio',
 }
 

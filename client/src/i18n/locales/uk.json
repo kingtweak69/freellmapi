@@ -259,9 +259,7 @@
     "limitHint": "Залиште порожнім, щоб не було обмеження.",
     "usageThisMonth": "Місячні витрати",
     "usageEmpty": "Цього місяця ще немає запитів.",
-    "usageRequestsMonth": "{count} запитів цього місяця",
-    "videoTab": "Video",
-    "videoDesc": "Text-to-video generation models."
+    "usageRequestsMonth": "{count} запитів цього місяця"
   },
   "strategies": {
     "explore": "Досліджувати невиміряні моделі",
